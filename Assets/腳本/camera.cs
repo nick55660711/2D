@@ -13,9 +13,9 @@ public class camera : MonoBehaviour
 
 
 
-        if (-0.1f <= transform.position.x - GameObject.Find("playerShip2_orange (1)").transform.position.x)
+        if (-0.1f <= transform.position.x - GameObject.Find("playerShip2_orange").transform.position.x)
         {
-            if (0.1f >= transform.position.x - GameObject.Find("playerShip2_orange (1)").transform.position.x)
+            if (0.1f >= transform.position.x - GameObject.Find("playerShip2_orange").transform.position.x)
             {
 
                 transform.Translate(Speed * Input.GetAxis("Horizontal"), 0f, 0f);

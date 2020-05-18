@@ -22,6 +22,7 @@ public class Level : MonoBehaviour
         {
             //物件名稱.SetActive 判斷物件是否要開啟
             //GameObject.Find("Hanekuriboh").Setactive(false);
+            //物件名稱.GetComponent<元件名稱>() 呼叫物件的元件
             //物件名稱.GetComponent<元件名稱>().enabled 判斷物件身上的元件是否開啟
 
             GameObject.Find("Hanekuriboh").GetComponent<AudioSource>().enabled = false;

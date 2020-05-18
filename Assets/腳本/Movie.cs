@@ -10,7 +10,7 @@ public class Movie : MonoBehaviour
     private void Start()
     {
         //依照時間持續呼叫function
-        //InvokeRepeating(function名稱, 遊戲一開始要等待幾秒才呼叫第一次, 等待幾秒後呼叫第二次 , 第三次......);
+        //InvokeRepeating(function名稱(字串), 遊戲一開始要等待幾秒才呼叫第一次, 等待幾秒後呼叫第二次 , 第三次......);
         InvokeRepeating("CheckMovie", 3f, 0.1f);
     }
 

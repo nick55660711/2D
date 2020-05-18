@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class BGM : MonoBehaviour
 {
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        Application.LoadLevel("CH1.menu");
+        Application.LoadLevel("CH1. menu");
     }
 
-   
+    
 }

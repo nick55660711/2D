@@ -89,11 +89,10 @@ public class Menu : MonoBehaviour
         Application.LoadLevel("CH2. Level menu");
 
 
-
     }
+
     public void BackScene()
     {
-        
         Application.LoadLevel("CH1. menu");
         Destroy(GameObject.Find("Hanekuriboh").gameObject);
     }
