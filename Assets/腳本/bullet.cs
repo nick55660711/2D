@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class bullet : MonoBehaviour
 {
@@ -10,9 +11,12 @@ public class bullet : MonoBehaviour
     public float DeleteTime;
     public GameObject Effect;
     public AudioSource EffectAudio;
+    public Image hp_bar;
     private void Start()
     {
         EffectAudio = GameObject.Find("bom1").GetComponent<AudioSource>();
+        hp_bar = GameObject.Find("HP bar").GetComponent<Image>();
+
         Destroy(gameObject, DeleteTime);
     }
 
@@ -48,8 +52,20 @@ public class bullet : MonoBehaviour
             Destroy(gameObject);
         }
 
+        if (other.tag == "Player" && gameObject.tag == "EnemyShot")
+        {
+            //動態生成爆炸特效
+            //other.transform.position 兩個物件接觸的位置
+            //other.transform.rotation 兩個物件接觸的旋轉值
+            Instantiate(Effect, other.transform.position, other.transform.rotation);
+            //爆炸音效
+            EffectAudio.Play();
 
-
+            hp_bar.fillAmount -= 0.22f;
+            //子彈物件消滅
+            Destroy(gameObject);
+        }
+        
     }
 
 }

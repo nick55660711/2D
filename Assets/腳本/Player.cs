@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
@@ -15,6 +16,11 @@ public class Player : MonoBehaviour
     {
         鍵盤,手機陀螺儀,滑鼠,手機搖桿
     }
+
+
+    public float hp;
+    public Image hp_bar;
+
 
     void Start()
     {
@@ -49,7 +55,7 @@ public class Player : MonoBehaviour
         //Input.GetAxis("Vertical") 按S或是下鍵的時候回傳值為-1
         //Input.GetAxis("Vertical") 按W或是上鍵的時候回傳值為1
         #endregion
-
+        #region
         // #if UNITY_STANDALONE  //PC上執行
         if ((int)control == 0) 
         transform.Translate(Speed * Input.GetAxis("Horizontal"), Speed * Input.GetAxis("Vertical"), 0f);
@@ -113,8 +119,10 @@ public class Player : MonoBehaviour
 
         transform.position=new Vector3(Mathf.Clamp(transform.position.x,-2.25f,2.25f), 
             Mathf.Clamp(transform.position.y, -4.6f, 4.6f),transform.position.z);
+        #endregion
+        hp = hp_bar.fillAmount;
 
-    
+        if (hp == 0) { Destroy(gameObject); }
     }
 
     //按下手機虛擬搖桿
@@ -149,4 +157,14 @@ public class Player : MonoBehaviour
     {
         MouseClick = false;
     }
+
+
+
+
+
+
+
+
+
+
 }
