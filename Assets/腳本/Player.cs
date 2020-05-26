@@ -18,14 +18,74 @@ public class Player : MonoBehaviour
     }
 
 
-    public float hp;
+    public float playerhp;
+    // 程式中計算玩家的血量數值
+    float hp;
+
     public Image hp_bar;
+
+    float Score;
+    float HighScore;
+
+    public Text ScoreText;
+    string SaveScore = "SaveScore";
+    public Text HighScoreText;
+    string SaveHighScore = "SaveHighScore";
+    public int LevelID;
+    string SaveLevelID = "SaveLevelID";
+    string SaveClearScore = "SaveClearScore";
+    public Text ClearScoreText;
 
 
     void Start()
     {
         
+
+        LevelID = PlayerPrefs.GetInt(SaveLevelID);
+        //程式中的血量=屬性面板中調整的玩家血量數值
+        hp = playerhp;
+        HighScore = PlayerPrefs.GetFloat(SaveHighScore + LevelID);
+        HighScoreText.text = "Level " + LevelID + "\n" + "HighScore :" + HighScore;
+        ClearScoreText.text = "Clear Score " + PlayerPrefs.GetFloat(SaveClearScore + LevelID);
+        control = (Controltype)PlayerPrefs.GetInt("SaveCtrl");
+
     }
+
+
+    //敵機子彈打中玩家，玩家扣血
+    public void HurtPlayer(float hurt)
+    {
+        //玩家血量遞減
+        hp -= hurt;
+
+        //限制玩家的血量介於0 - 預設值
+        hp = Mathf.Clamp(hp, 0, playerhp);
+
+        //玩家血量的數值=程式中血量/自己設定的血量數值
+        hp_bar.fillAmount = hp / playerhp;
+
+        //如果玩家血量<=0 跳到遊戲結束畫面
+        if (hp == 0) {
+            PlayerPrefs.SetFloat(SaveScore, Score);
+            PlayerPrefs.SetFloat(SaveHighScore + LevelID, HighScore);
+            Application.LoadLevel("Game Over Screen"); 
+        }
+
+    }
+    public void GetScore(float AddScore)
+    {
+        Score += AddScore;
+        ScoreText.text = "Score :" + Score;
+        
+        if(Score > HighScore)
+        {
+            HighScore = Score;
+            HighScoreText.text = "Level " + LevelID + "\n" + "HighScore :" + HighScore;
+        }
+
+    }
+
+    
 
     void Update()
     {
@@ -57,16 +117,21 @@ public class Player : MonoBehaviour
         #endregion
         #region
         // #if UNITY_STANDALONE  //PC上執行
+        
         if ((int)control == 0) 
         transform.Translate(Speed * Input.GetAxis("Horizontal"), Speed * Input.GetAxis("Vertical"), 0f);
 
 
         //#endif
 
-        //# if UNITY_ANDROID //Android上執行
-        //  Input.acceleration.x 手機陀螺儀X軸 Input.acceleration.y 手機陀螺儀Y軸
         if ((int)control == 1)
-            transform.Translate(Speed * Input.acceleration.x, Speed * Input.acceleration.y, 0f);
+        {
+            JoystickObject.SetActive(true);
+        }
+        else
+        {
+            JoystickObject.SetActive(false);
+        }
 
         // 滑鼠左鍵 ID=0 右鍵ID=1 滾輪按鍵ID=2
         /*
@@ -105,13 +170,9 @@ public class Player : MonoBehaviour
         }
 
         if ((int)control == 3)
-        {
-            JoystickObject.SetActive(true);
-        }
-        else
-        {
-            JoystickObject.SetActive(false);
-        }
+        //# if UNITY_ANDROID //Android上執行
+        //  Input.acceleration.x 手機陀螺儀X軸 Input.acceleration.y 手機陀螺儀Y軸
+            transform.Translate(Speed * Input.acceleration.x, Speed * Input.acceleration.y, 0f);
 
         //#endif
 
@@ -120,9 +181,7 @@ public class Player : MonoBehaviour
         transform.position=new Vector3(Mathf.Clamp(transform.position.x,-2.25f,2.25f), 
             Mathf.Clamp(transform.position.y, -4.6f, 4.6f),transform.position.z);
         #endregion
-        hp = hp_bar.fillAmount;
 
-        if (hp == 0) { Destroy(gameObject); }
     }
 
     //按下手機虛擬搖桿

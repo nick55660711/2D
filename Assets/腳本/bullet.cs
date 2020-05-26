@@ -11,11 +11,13 @@ public class bullet : MonoBehaviour
     public float DeleteTime;
     public GameObject Effect;
     public AudioSource EffectAudio;
-    public Image hp_bar;
+    public float atk;
+
+
+
     private void Start()
     {
         EffectAudio = GameObject.Find("bom1").GetComponent<AudioSource>();
-        hp_bar = GameObject.Find("HP bar").GetComponent<Image>();
 
         Destroy(gameObject, DeleteTime);
     }
@@ -39,7 +41,7 @@ public class bullet : MonoBehaviour
     //OnTriggerEnter 3維座標 OnTriggerEnter2D 二維座標
     void OnTriggerEnter2D(Collider2D other) {
         //玩家的子彈打到有collider2D物件時，檢測該物件的標籤是否為Enemy
-        if (other.tag == "Enemy"&&gameObject.tag=="PlayerLaser") {
+        if (other.tag == "Enemy"&&gameObject.tag=="PlayerBullet") {
             //動態生成爆炸特效
                 //other.transform.position 兩個物件接觸的位置
                 //other.transform.rotation 兩個物件接觸的旋轉值
@@ -48,20 +50,47 @@ public class bullet : MonoBehaviour
             EffectAudio.Play();
             //敵機消滅
             Destroy(other.gameObject);
+
+            //玩家子彈打中敵機，玩家加分
+            GameObject.Find("player").GetComponent<Player>().GetScore(100);
             //子彈物件消滅
             Destroy(gameObject);
         }
 
-        if (other.tag == "Player" && gameObject.tag == "EnemyShot")
+
+
+
+
+        if (other.tag == "PlayerBullet" && gameObject.tag == "EnemyBullet")
         {
             //動態生成爆炸特效
-            //other.transform.position 兩個物件接觸的位置
-            //other.transform.rotation 兩個物件接觸的旋轉值
+           
             Instantiate(Effect, other.transform.position, other.transform.rotation);
+
             //爆炸音效
             EffectAudio.Play();
 
-            hp_bar.fillAmount -= 0.22f;
+            //子彈物件消滅
+            Destroy(gameObject);
+
+            Destroy(other.gameObject);
+        }
+
+     
+        
+        
+        
+        if (other.tag == "Player" && gameObject.tag == "EnemyBullet")
+        {
+            //動態生成爆炸特效
+           
+            Instantiate(Effect, other.transform.position, other.transform.rotation);
+
+            //爆炸音效
+            EffectAudio.Play();
+
+
+            other.GetComponent<Player>().HurtPlayer(atk);
             //子彈物件消滅
             Destroy(gameObject);
         }

@@ -18,10 +18,12 @@ public class Menu : MonoBehaviour
     public Slider SoundSlider;
 
     public Dropdown ScreenSizeDropdwon;
+    public Dropdown ControlDropdwon;
 
     //Playerprefs 儲存/取值資料欄位的名稱
     string SaveAudioSlider = "SaveAudioSlider" ;
     string SaveRes = "SaveRes";
+    string SaveCtrl = "SaveCtrl";
 
 
     private void Start()
@@ -29,15 +31,20 @@ public class Menu : MonoBehaviour
         //(全域變數寫法 SaveData腳本)SoundSlider.value = SaveData.SaveAudioSlider;
         SoundSlider.value = PlayerPrefs.GetFloat(SaveAudioSlider);
         ScreenSizeDropdwon.value = PlayerPrefs.GetInt(SaveRes);
+        ControlDropdwon.value = PlayerPrefs.GetInt(SaveCtrl);
         AudioListener.volume = SoundSlider.value;
         
     }
+
+
+
+
     private void Update()
     {
-        AudioListener.volume = SoundSlider.value;
 
        
 
+        AudioListener.volume = SoundSlider.value;
         
         //設定遊戲執行檔的解析度Screen.SetResolution(寬, 高, 是否全螢幕);
         
@@ -61,6 +68,7 @@ public class Menu : MonoBehaviour
                 Screen.SetResolution(1080, 1920, false);
                 break;
         }
+        
 
 
 
@@ -86,17 +94,12 @@ public class Menu : MonoBehaviour
         //儲存整數 PlayerPrefs.SetInt(儲存欄位名稱,儲存值);
         PlayerPrefs.SetFloat(SaveAudioSlider, SoundSlider.value);
         PlayerPrefs.SetInt(SaveRes, ScreenSizeDropdwon.value);
-        Application.LoadLevel("CH2. Level menu");
+        PlayerPrefs.SetInt(SaveCtrl, ControlDropdwon.value);
 
-
+    Application.LoadLevel("CH2. Level menu");
     }
 
-    public void BackScene()
-    {
-        Application.LoadLevel("CH1. menu");
-        Destroy(GameObject.Find("Hanekuriboh").gameObject);
-    }
-
+   
     #endregion
 
     #region 遊戲關閉
